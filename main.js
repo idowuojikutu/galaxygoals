@@ -1,11 +1,14 @@
 
 // State Management
 let goals = JSON.parse(localStorage.getItem('galaxyGoals')) || [];
+let currentFilter = 'all';
 
 // DOM Elements
 const goalInput = document.getElementById('goalInput');
+const priorityInput = document.getElementById('priorityInput');
 const addGoalBtn = document.getElementById('addGoalBtn');
 const goalsContainer = document.getElementById('goalsContainer');
+const filterBtns = document.querySelectorAll('.filter-btn');
 const universe = document.getElementById('universe');
 
 // Initialize
@@ -47,10 +50,13 @@ function createStars() {
 // Goal Logic
 function addGoal() {
     const text = goalInput.value.trim();
+    const priority = priorityInput.value;
+
     if (text) {
         const goal = {
             id: Date.now(),
             text,
+            priority,
             completed: false,
             createdAt: new Date().toISOString()
         };
@@ -88,21 +94,36 @@ function saveGoals() {
 function renderGoals() {
     goalsContainer.innerHTML = '';
 
-    if (goals.length === 0) {
+    const filteredGoals = goals.filter(goal => {
+        if (currentFilter === 'active') return !goal.completed;
+        if (currentFilter === 'completed') return goal.completed;
+        return true;
+    });
+
+    if (filteredGoals.length === 0) {
+        const emptyMsg = currentFilter === 'completed' ? "No conquered worlds yet." :
+            currentFilter === 'active' ? "No active missions. Relax, or launch new ones!" :
+                "Space is empty... Launch a goal to begin.";
+
         goalsContainer.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
-        <p>Space is empty... Launch a goal to begin.</p>
+        <p>${emptyMsg}</p>
       </div>
     `;
         return;
     }
 
-    goals.forEach(goal => {
+    filteredGoals.forEach(goal => {
         const card = document.createElement('div');
-        card.className = `goal-card ${goal.completed ? 'completed' : ''}`;
+        const priorityClass = goal.priority || 'star';
+        card.className = `goal-card ${goal.completed ? 'completed' : ''} ${priorityClass}`;
+
+        const priorityLabel = priorityClass === 'supernova' ? 'Supernova' :
+            priorityClass === 'nebula' ? 'Nebula' : 'Star';
 
         card.innerHTML = `
       <div class="goal-content">
+        <div class="priority-badge">${priorityLabel}</div>
         <div class="goal-text">${escapeHtml(goal.text)}</div>
       </div>
       <div class="actions">
@@ -131,6 +152,15 @@ function setupEventListeners() {
         if (e.key === 'Enter') {
             addGoal();
         }
+    });
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            renderGoals();
+        });
     });
 }
 

@@ -23,7 +23,18 @@
 
         <div class="mission-control glass-panel">
             <input type="text" id="goalInput" placeholder="Enter your next mission..." autocomplete="off">
+            <select id="priorityInput">
+                <option value="star">Star (Normal)</option>
+                <option value="supernova">Supernova (High)</option>
+                <option value="nebula">Nebula (Low)</option>
+            </select>
             <button id="addGoalBtn">Launch</button>
+        </div>
+
+        <div class="filter-control">
+            <button class="filter-btn active" data-filter="all">All Universe</button>
+            <button class="filter-btn" data-filter="active">Active Orbits</button>
+            <button class="filter-btn" data-filter="completed">Conquered</button>
         </div>
 
         <div id="goalsContainer" class="goals-grid">
