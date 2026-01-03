@@ -21,6 +21,18 @@
             <p>Orbit your dreams.</p>
         </header>
 
+        <div class="mission-stats glass-panel">
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span>Mission Progress</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="mission-control glass-panel">
             <input type="text" id="goalInput" placeholder="Enter your next mission..." autocomplete="off">
             <select id="priorityInput">
@@ -35,6 +47,7 @@
             <button class="filter-btn active" data-filter="all">All Universe</button>
             <button class="filter-btn" data-filter="active">Active Orbits</button>
             <button class="filter-btn" data-filter="completed">Conquered</button>
+            <button id="blackHoleBtn" class="black-hole-btn" title="Absorb Completed Missions">⚫ Black Hole</button>
         </div>
 
         <div id="goalsContainer" class="goals-grid">

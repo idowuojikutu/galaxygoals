@@ -10,12 +10,16 @@ const addGoalBtn = document.getElementById('addGoalBtn');
 const goalsContainer = document.getElementById('goalsContainer');
 const filterBtns = document.querySelectorAll('.filter-btn');
 const universe = document.getElementById('universe');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const blackHoleBtn = document.getElementById('blackHoleBtn');
 
 // Initialize
 function init() {
     createStars();
     renderGoals();
     setupEventListeners();
+    updateProgress();
 }
 
 // Background Animation
@@ -92,6 +96,7 @@ function saveGoals() {
 }
 
 function renderGoals() {
+    updateProgress();
     goalsContainer.innerHTML = '';
 
     const filteredGoals = goals.filter(goal => {
@@ -145,6 +150,7 @@ function renderGoals() {
     });
 }
 
+
 function setupEventListeners() {
     addGoalBtn.addEventListener('click', addGoal);
 
@@ -162,6 +168,37 @@ function setupEventListeners() {
             renderGoals();
         });
     });
+
+    if (blackHoleBtn) {
+        blackHoleBtn.addEventListener('click', clearCompleted);
+    }
+}
+
+function updateProgress() {
+    const total = goals.length;
+    const completed = goals.filter(g => g.completed).length;
+
+    const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+    if (progressFill) progressFill.style.width = `${percentage}%`;
+    if (progressText) progressText.textContent = `${percentage}% Orbit Complete`;
+}
+
+function clearCompleted() {
+    if (confirm('Are you sure you want to let the Black Hole absorb all conquered missions?')) {
+        goals = goals.filter(g => !g.completed);
+        saveGoals();
+        renderGoals();
+
+        // Visual effect on button
+        const btn = document.getElementById('blackHoleBtn');
+        btn.style.transform = 'scale(0.1) rotate(360deg)';
+        btn.style.opacity = '0';
+        setTimeout(() => {
+            btn.style.transform = '';
+            btn.style.opacity = '';
+        }, 500);
+    }
 }
 
 function escapeHtml(text) {
