@@ -17,6 +17,7 @@
     <div id="universe"></div>
     <div id="app">
         <header class="glass-header">
+            <button id="audioToggle" class="btn-icon audio-toggle" title="Toggle Sound">🔊</button>
             <h1>GalaxyGoals</h1>
             <p>Orbit your dreams.</p>
         </header>
@@ -30,6 +31,18 @@
                 <div class="progress-bar">
                     <div id="progressFill" class="progress-fill"></div>
                 </div>
+            </div>
+
+            <div class="rank-container"
+                style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border);">
+                <div class="progress-info">
+                    <span id="rankTitle">Space Cadet</span>
+                    <span id="rankXP">0 XP</span>
+                </div>
+                <div class="progress-bar rank-bar-bg">
+                    <div id="rankProgressFill" class="progress-fill rank-fill"></div>
+                </div>
+                <div class="next-rank-info">Next Rank: <span id="nextRankXP">500</span> XP</div>
             </div>
         </div>
 
